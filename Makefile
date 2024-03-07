@@ -3,6 +3,10 @@ up: docker-up
 down: docker-down
 restart: docker-down docker-up
 init: docker-down-all docker-build docker-up composer-install
+test: test
+test-coverage:test-coverage
+test-unit:test-unit
+test-unit-coverage:test-unit-coverage
 
 docker-build:
 	docker compose build --no-cache
@@ -33,3 +37,15 @@ logs:
 
 bash:
 	docker container exec -it $(container) bash
+
+test:
+	docker-compose run --rm csv-processor-php-cli php bin/phpunit
+
+test-coverage:
+	docker-compose run --rm csv-processor-php-cli export XDEBUG_MODE=coverage php bin/phpunit --coverage-clover var/clover.xml --coverage-html var/coverage --coverage-filter=src/
+
+test-unit:
+	docker-compose run --rm csv-processor-php-cli php bin/phpunit --testsuite=unit
+
+test-unit-coverage:
+	docker-compose run --rm csv-processor-php-cli export XDEBUG_MODE=coverage php vendor/bin/phpunit --testsuite=unit --coverage-clover var/clover.xml --coverage-html var/coverage --coverage-filter=src/

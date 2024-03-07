@@ -12,8 +12,8 @@ use Symfony\Component\Mime\MimeTypes;
 class CsvFileValidator
 {
     public const CSV_FILE_EXTENSION = 'csv';
-    private const FILE_LIMIT_MB = 64;
-    private const BYTES_IN_MB = 1024;
+    public const FILE_LIMIT_MB = 64;
+    public const BYTES_IN_MB = 1024;
 
     /**
      * @var string[] Grabbed from https://stackoverflow.com/a/42140178
