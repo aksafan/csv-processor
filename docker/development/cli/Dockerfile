@@ -10,8 +10,6 @@ RUN apt-get update && apt-get install -y libpq-dev unzip \
     && pecl install xdebug-3.3.1 \
     && docker-php-ext-enable xdebug
 
-COPY ./xdebug/xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
-
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/bin --filename=composer --quiet
 
 # https://getcomposer.org/doc/03-cli.md#composer-allow-superuser
