@@ -1,0 +1,153 @@
+[
+    {
+        "row_index": 3,
+        "violation_info": {
+            "type": "https:\/\/symfony.com\/errors\/validation",
+            "title": "Validation Failed",
+            "detail": "item: The item type of the row is invalid (\"Service2\"). Allowed item types are \"Product\", \"Service\".\ntype: The type of the row is invalid (\"Physical2\"). Allowed item types are \"Physical\", \"Non-Physical\".",
+            "violations": [
+                {
+                    "propertyPath": "item",
+                    "title": "The item type of the row is invalid (\"Service2\"). Allowed item types are \"Product\", \"Service\".",
+                    "template": "The item type of the row is invalid ({{ value }}). Allowed item types are {{ choices }}.",
+                    "parameters": {
+                        "{{ value }}": "\"Service2\"",
+                        "{{ choices }}": "\"Product\", \"Service\""
+                    },
+                    "type": "urn:uuid:8e179f1b-97aa-4560-a02f-2a8b42e49df7"
+                },
+                {
+                    "propertyPath": "type",
+                    "title": "The type of the row is invalid (\"Physical2\"). Allowed item types are \"Physical\", \"Non-Physical\".",
+                    "template": "The type of the row is invalid ({{ value }}). Allowed item types are {{ choices }}.",
+                    "parameters": {
+                        "{{ value }}": "\"Physical2\"",
+                        "{{ choices }}": "\"Physical\", \"Non-Physical\""
+                    },
+                    "type": "urn:uuid:8e179f1b-97aa-4560-a02f-2a8b42e49df7"
+                }
+            ]
+        }
+    },
+    {
+        "row_index": 4,
+        "violation_info": {
+            "type": "https:\/\/symfony.com\/errors\/validation",
+            "title": "Validation Failed",
+            "detail": "type: The type of the row is invalid (\"Non-Physical3\"). Allowed item types are \"Physical\", \"Non-Physical\".",
+            "violations": [
+                {
+                    "propertyPath": "type",
+                    "title": "The type of the row is invalid (\"Non-Physical3\"). Allowed item types are \"Physical\", \"Non-Physical\".",
+                    "template": "The type of the row is invalid ({{ value }}). Allowed item types are {{ choices }}.",
+                    "parameters": {
+                        "{{ value }}": "\"Non-Physical3\"",
+                        "{{ choices }}": "\"Physical\", \"Non-Physical\""
+                    },
+                    "type": "urn:uuid:8e179f1b-97aa-4560-a02f-2a8b42e49df7"
+                }
+            ]
+        }
+    },
+    {
+        "row_index": 664,
+        "violation_info": {
+            "type": "https:\/\/symfony.com\/errors\/validation",
+            "title": "Validation Failed",
+            "detail": "weight: This value should not be blank.",
+            "violations": [
+                {
+                    "propertyPath": "weight",
+                    "title": "This value should not be blank.",
+                    "template": "This value should not be blank.",
+                    "parameters": {
+                        "{{ value }}": "null"
+                    },
+                    "type": "urn:uuid:c1051bb4-d103-4f74-8988-acbcafc7fdc3"
+                }
+            ]
+        }
+    },
+    {
+        "row_index": 5329,
+        "violation_info": {
+            "type": "https:\/\/symfony.com\/errors\/validation",
+            "title": "Validation Failed",
+            "detail": "item: The item type of the row is invalid (\"Product2\"). Allowed item types are \"Product\", \"Service\".",
+            "violations": [
+                {
+                    "propertyPath": "item",
+                    "title": "The item type of the row is invalid (\"Product2\"). Allowed item types are \"Product\", \"Service\".",
+                    "template": "The item type of the row is invalid ({{ value }}). Allowed item types are {{ choices }}.",
+                    "parameters": {
+                        "{{ value }}": "\"Product2\"",
+                        "{{ choices }}": "\"Product\", \"Service\""
+                    },
+                    "type": "urn:uuid:8e179f1b-97aa-4560-a02f-2a8b42e49df7"
+                }
+            ]
+        }
+    },
+    {
+        "row_index": 8258,
+        "violation_info": {
+            "type": "https:\/\/symfony.com\/errors\/validation",
+            "title": "Validation Failed",
+            "detail": "type: The type of the row is invalid (\"Non-Physical2\"). Allowed item types are \"Physical\", \"Non-Physical\".",
+            "violations": [
+                {
+                    "propertyPath": "type",
+                    "title": "The type of the row is invalid (\"Non-Physical2\"). Allowed item types are \"Physical\", \"Non-Physical\".",
+                    "template": "The type of the row is invalid ({{ value }}). Allowed item types are {{ choices }}.",
+                    "parameters": {
+                        "{{ value }}": "\"Non-Physical2\"",
+                        "{{ choices }}": "\"Physical\", \"Non-Physical\""
+                    },
+                    "type": "urn:uuid:8e179f1b-97aa-4560-a02f-2a8b42e49df7"
+                }
+            ]
+        }
+    },
+    {
+        "row_index": 9142,
+        "violation_info": {
+            "type": "https:\/\/symfony.com\/errors\/validation",
+            "title": "Validation Failed",
+            "detail": "price: This value should be either positive or zero.",
+            "violations": [
+                {
+                    "propertyPath": "price",
+                    "title": "This value should be either positive or zero.",
+                    "template": "This value should be either positive or zero.",
+                    "parameters": {
+                        "{{ value }}": "-347",
+                        "{{ compared_value }}": "0",
+                        "{{ compared_value_type }}": "int"
+                    },
+                    "type": "urn:uuid:ea4e51d1-3342-48bd-87f1-9e672cd90cad"
+                }
+            ]
+        }
+    },
+    {
+        "row_index": 9573,
+        "violation_info": {
+            "type": "https:\/\/symfony.com\/errors\/validation",
+            "title": "Validation Failed",
+            "detail": "width: This value should be either positive or zero.",
+            "violations": [
+                {
+                    "propertyPath": "width",
+                    "title": "This value should be either positive or zero.",
+                    "template": "This value should be either positive or zero.",
+                    "parameters": {
+                        "{{ value }}": "-1.6",
+                        "{{ compared_value }}": "0",
+                        "{{ compared_value_type }}": "int"
+                    },
+                    "type": "urn:uuid:ea4e51d1-3342-48bd-87f1-9e672cd90cad"
+                }
+            ]
+        }
+    }
+]

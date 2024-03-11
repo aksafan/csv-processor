@@ -1,0 +1,22 @@
+[
+    {
+        "row_index": 0,
+        "violation_info": {
+            "type": "https://symfony.com/errors/validation",
+            "title": "Validation Failed",
+            "detail": "csv_file: The mime type of the file is invalid (\"application/json\"). Allowed mime types are \"application/vnd.ms-excel\", \"application/excel\", \"application/csv\", \"application/x-csv\", \"text/x-comma-separated-values\", \"text/comma-separated-values\", \"text/plain\", \"text/csv\", \"text/x-csv\".",
+            "violations": [
+                {
+                    "propertyPath": "csv_file",
+                    "title": "The mime type of the file is invalid (\"application/json\"). Allowed mime types are \"application/vnd.ms-excel\", \"application/excel\", \"application/csv\", \"application/x-csv\", \"text/x-comma-separated-values\", \"text/comma-separated-values\", \"text/plain\", \"text/csv\", \"text/x-csv\".",
+                    "template": "The mime type of the file is invalid ({{ type }}). Allowed mime types are {{ types }}.",
+                    "parameters": {
+                        "{{ type }}": "\"application/json\"",
+                        "{{ types }}": "\"application/vnd.ms-excel\", \"application/excel\", \"application/csv\", \"application/x-csv\", \"text/x-comma-separated-values\", \"text/comma-separated-values\", \"text/plain\", \"text/csv\", \"text/x-csv\""
+                    },
+                    "type": "urn:uuid:744f00bc-4389-4c74-92de-9a43cde55534"
+                }
+            ]
+        }
+    }
+]

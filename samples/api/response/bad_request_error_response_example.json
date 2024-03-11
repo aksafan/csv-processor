@@ -1,0 +1,6 @@
+{
+    "error": {
+        "code": 400,
+        "message": "CsvReader error: Headers are invalid: Headers must be equal to scheme: \"item,name,type,sku,stock,price,category,description,weight,width,height,visible\".."
+    }
+}

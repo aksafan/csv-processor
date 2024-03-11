@@ -1,0 +1,21 @@
+[
+    {
+        "row_index": 0,
+        "violation_info": {
+            "type": "https:\/\/symfony.com\/errors\/validation",
+            "title": "Validation Failed",
+            "detail": "csv_file: Please upload a CSV file",
+            "violations": [
+                {
+                    "propertyPath": "csv_file",
+                    "title": "Please upload a CSV file",
+                    "template": "Please upload a CSV file",
+                    "parameters": {
+                        "{{ value }}": "null"
+                    },
+                    "type": "urn:uuid:c1051bb4-d103-4f74-8988-acbcafc7fdc3"
+                }
+            ]
+        }
+    }
+]

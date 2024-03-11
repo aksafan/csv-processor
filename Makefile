@@ -3,10 +3,8 @@ up: docker-up
 down: docker-down
 restart: docker-down docker-up
 init: docker-down-all docker-build docker-up composer-install
-test: test
-test-coverage:test-coverage
-test-unit:test-unit
-test-unit-coverage:test-unit-coverage
+command-list:command-list
+csv-process:csv-process
 
 docker-build:
 	docker compose build --no-cache
@@ -30,22 +28,29 @@ migrations:
 	docker-compose run --rm csv-processor-php-cli php bin/console doctrine:migrations:migrate --no-interaction
 
 sh:
-	docker-compose exec $(container) sh
+	docker-compose exec $(c) sh
 
 logs:
 	docker-compose logs --tail=0 --follow
 
-bash:
-	docker container exec -it $(container) bash
-
 test:
-	docker-compose run --rm csv-processor-php-cli php bin/phpunit
+	docker-compose run --rm csv-processor-php-cli php vendor/bin/phpunit
 
 test-coverage:
-	docker-compose run --rm csv-processor-php-cli export XDEBUG_MODE=coverage php bin/phpunit --coverage-clover var/clover.xml --coverage-html var/coverage --coverage-filter=src/
+	docker-compose run --rm csv-processor-php-cli export XDEBUG_MODE=coverage php vendor/bin/phpunit --coverage-clover var/clover.xml --coverage-html var/coverage --coverage-filter=src/
 
 test-unit:
-	docker-compose run --rm csv-processor-php-cli php bin/phpunit --testsuite=unit
+	docker-compose run --rm csv-processor-php-cli php vendor/bin/phpunit --testsuite=unit
 
 test-unit-coverage:
 	docker-compose run --rm csv-processor-php-cli export XDEBUG_MODE=coverage php vendor/bin/phpunit --testsuite=unit --coverage-clover var/clover.xml --coverage-html var/coverage --coverage-filter=src/
+
+command-list:
+	docker-compose run --rm csv-processor-php-cli php bin/console list --short
+
+options ?=
+csv-process:
+	docker-compose run --rm csv-processor-php-cli php bin/console csv:process $(path) $(options)
+
+csv-generate:
+	docker-compose run --rm csv-processor-php-cli php bin/console csv:generate $(path) $(options)
