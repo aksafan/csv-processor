@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use App\Entity\Csv\AbstractCsvEntity;
-use App\Entity\Csv\Product;
-use App\Entity\Csv;
+use App\Entity\Csv\Csv;
+use App\Entity\CsvScheme\AbstractCsvSchemeEntity;
+use App\Entity\CsvScheme\Product;
 use App\Entity\Exception\Domain\Reader\CsvReaderException;
 use App\Entity\Exception\Domain\Reader\CsvReaderInvalidHeadersException;
 use App\Entity\Exception\Domain\Reader\CsvRecordsUnSuccessfulProcessingException;
@@ -26,16 +26,16 @@ final readonly class CsvProcessor
     ) {
     }
 
-    public function processFacade(Csv $csvProcessor): bool
+    public function processFacade(Csv $csv): bool
     {
-        $recordsToProcess = $this->getRecords($csvProcessor);
+        $recordsToProcess = $this->getRecords($csv);
 
         return $this->processRecords($recordsToProcess);
     }
 
-    public function getRecords(Csv $csvProcessor): Iterator
+    public function getRecords(Csv $csv): Iterator
     {
-        $csvReader = $this->csvReaderFactory->create($csvProcessor);
+        $csvReader = $this->csvReaderFactory->create($csv);
 
         $headers = $this->getHeaders($csvReader);
 
@@ -51,7 +51,7 @@ final readonly class CsvProcessor
         $result = false;
         $errors = [];
 
-        /** @var AbstractCsvEntity $record */
+        /** @var AbstractCsvSchemeEntity $record */
         foreach ($records as $record) {
             try {
                 $result = $this->processRecord($record);
@@ -67,7 +67,7 @@ final readonly class CsvProcessor
         return $result;
     }
 
-    public function processRecord(AbstractCsvEntity $record): bool
+    public function processRecord(AbstractCsvSchemeEntity $record): bool
     {
         $entityErrorList = $this->validator->validate($record);
         if (count($entityErrorList) > 0) {

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Service\Factory;
 
-use App\Entity\Csv\Product;
-use App\Entity\CsvGenerator;
+use App\Entity\Csv\CsvGenerator;
+use App\Entity\CsvScheme\Product;
 use App\Entity\Exception\Domain\Writer\CsvWriterException;
 use App\Entity\Exception\Domain\Writer\CsvWriterInvalidArgumentException;
 use League\Csv\Exception;

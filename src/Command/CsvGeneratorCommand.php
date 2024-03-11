@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Command;
 
 use App\Command\Factory\CsvGeneratorFactory;
-use App\Entity\CsvGenerator;
-use App\Entity\CsvProperties;
+use App\Entity\Csv\CsvGenerator;
+use App\Entity\Csv\CsvProperties;
 use App\Entity\Exception\Domain\Writer\CsvWriterException;
 use App\Service\Factory\CsvWriterFactory;
 use League\Csv\CannotInsertRecord;

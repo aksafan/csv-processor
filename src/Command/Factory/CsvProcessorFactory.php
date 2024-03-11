@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Command\Factory;
 
-use App\Entity\Csv;
+use App\Entity\Csv\Csv;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\HttpFoundation\File\File;
 

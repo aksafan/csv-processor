@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Entity;
+namespace App\Entity\Csv;
 
 use Symfony\Component\Validator\Constraints as Assert;
 

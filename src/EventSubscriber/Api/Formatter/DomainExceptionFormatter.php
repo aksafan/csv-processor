@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\SerializerInterface;
 
 final readonly class DomainExceptionFormatter implements EventSubscriberInterface
@@ -25,9 +26,9 @@ final readonly class DomainExceptionFormatter implements EventSubscriberInterfac
 
     public static function getSubscribedEvents(): array
     {
-        return array(
-            KernelEvents::EXCEPTION => 'onKernelException'
-        );
+        return [
+            KernelEvents::EXCEPTION => 'onKernelException',
+        ];
     }
 
     /**
@@ -51,7 +52,10 @@ final readonly class DomainExceptionFormatter implements EventSubscriberInterfac
 
         // Handles a group of validation errors for a single CSV record
         if ($exception instanceof CsvRecordsUnSuccessfulProcessingException) {
-            $json = $this->serializer->serialize($this->csvErrorOutputBuilder->build($exception->errors), 'json');
+            $json = $this->serializer->serialize(
+                $this->csvErrorOutputBuilder->build($exception->errors),
+                JsonEncoder::FORMAT
+            );
             $event->setResponse(JsonResponse::fromJsonString($json, Response::HTTP_UNPROCESSABLE_ENTITY));
 
             return;

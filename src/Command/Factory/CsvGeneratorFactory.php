@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Command\Factory;
 
-use App\Entity\CsvGenerator;
+use App\Entity\Csv\CsvGenerator;
 use Symfony\Component\Console\Input\InputInterface;
 
 final readonly class CsvGeneratorFactory

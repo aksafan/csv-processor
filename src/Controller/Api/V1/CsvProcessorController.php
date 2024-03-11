@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\V1;
 
-use App\Entity\Csv;
+use App\Entity\Csv\Csv;
 use App\EventSubscriber\Api\Formatter\CsvErrorOutputBuilder;
 use App\Service\CsvProcessor;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -33,19 +34,22 @@ class CsvProcessorController extends AbstractController
     )]
     public function process(Request $request): JsonResponse
     {
-        $csvProcessor = $this->serializer->denormalize($request->getPayload()->all(), Csv::class, null, [
+        $csv = $this->serializer->denormalize($request->getPayload()->all(), Csv::class, null, [
             AbstractNormalizer::OBJECT_TO_POPULATE => new Csv($request->files->get('csv_file')),
             AbstractNormalizer::IGNORED_ATTRIBUTES => ['csvFile'],
         ]);
 
-        $violations = $this->validator->validate($csvProcessor);
+        $violations = $this->validator->validate($csv);
         if ($violations->count()) {
-            $json = $this->serializer->serialize($this->csvErrorOutputBuilder->build([$violations]), 'json');
+            $json = $this->serializer->serialize(
+                $this->csvErrorOutputBuilder->build([$violations]),
+                JsonEncoder::FORMAT
+            );
 
             return JsonResponse::fromJsonString($json, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-        return $this->json($this->csvProcessorService->processFacade($csvProcessor), Response::HTTP_OK);
+        return $this->json($this->csvProcessorService->processFacade($csv), Response::HTTP_OK);
     }
 
     #[Route(

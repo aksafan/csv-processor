@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Entity\Csv;
+namespace App\Entity\CsvScheme;
 
-readonly abstract class AbstractCsvEntity
+readonly abstract class AbstractCsvSchemeEntity
 {
     public static function getScheme(): array
     {

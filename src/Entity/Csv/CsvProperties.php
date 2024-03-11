@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Entity;
+namespace App\Entity\Csv;
 
-class CsvProperties
+interface CsvProperties
 {
     public const DELIMITER = ',';
     public const ENCLOSURE = '"';

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Entity\Csv;
+namespace App\Entity\CsvScheme;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-readonly class Product extends AbstractCsvEntity
+readonly class Product extends AbstractCsvSchemeEntity
 {
     private const TYPE = ['Physical', 'Non-Physical'];
     private const ITEM = ['Product', 'Service'];

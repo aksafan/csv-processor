@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Command;
 
 use App\Command\Factory\CsvProcessorFactory;
-use App\Entity\CsvProperties;
+use App\Entity\Csv\CsvProperties;
 use App\Entity\Exception\Domain\Reader\CsvReaderException;
 use App\Entity\Exception\Domain\Reader\CsvRecordUnSuccessfulProcessingException;
 use App\Service\CsvProcessor;
@@ -76,16 +76,16 @@ class CsvProcessorCommand extends AbstractCommand
         $io = new SymfonyStyle($input, $output);
         $errors = [];
 
-        $csvProcessor = $this->csvProcessorFactory->createFromInput($input);
-        $violations = $this->validator->validate($csvProcessor);
+        $csv = $this->csvProcessorFactory->createFromInput($input);
+        $violations = $this->validator->validate($csv);
         if ($violations->count()) {
             return $this->endWithFailure($io, $stopwatch, 'CSV file validation errors:', [$violations]);
         }
 
-        $io->note(sprintf('Starting to process file: "%s".', $csvProcessor->csvFile->getPathname()));
+        $io->note(sprintf('Starting to process file: "%s".', $csv->csvFile->getPathname()));
 
         try {
-            $records = $this->csvProcessorService->getRecords($csvProcessor);
+            $records = $this->csvProcessorService->getRecords($csv);
         } catch (CsvReaderException $exception) {
             return $this->endWithFailure($io, $stopwatch, $exception->getMessage());
         } catch (RuntimeException $exception) {
@@ -109,7 +109,7 @@ class CsvProcessorCommand extends AbstractCommand
                 $stopwatch,
                 sprintf(
                     'CSV "%s" was NOT processed successfully. Here is the list of errors: ',
-                    $csvProcessor->csvFile->getPathname()
+                    $csv->csvFile->getPathname()
                 ),
                 $errors
             );
@@ -120,7 +120,7 @@ class CsvProcessorCommand extends AbstractCommand
             $stopwatch,
             sprintf(
                 'CSV "%s" was processed successfully. No errors have been detected.',
-                $csvProcessor->csvFile->getPathname()
+                $csv->csvFile->getPathname()
             )
         );
     }
