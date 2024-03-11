@@ -2,25 +2,25 @@
 
 ## How to run
 
-1. Make sure you have docker and docker-compose installed.
+1. Make sure you have docker and docker-compose installed and run.
 2. Run `make init` in order to build and start an application.
 3. Now you have several options to use application:
    1. API could be accessed on http://localhost:8080:
       1. `POST api/v1/csv/processor`. E.g.:
       ```curl
       curl --location 'http://127.0.0.1:8080/api/v1/csv/processor' \
-      --form 'csv_file=@"/path/to/repo/csv-processor/samples/csv/test_csv_1000_records_1709942325.csv"'
+      --form 'csv_file=@"samples/csv/test_csv_1000_records_1709942325.csv"'
       ```
       2. or with additional options:
       ```curl
       curl --location 'http://127.0.0.1:8080/api/v1/csv/processor' \
-      --form 'csv_file=@"/path/to/repo//csv-processor/samples/csv/test_csv_1000_records_1709942325.csv"' \
+      --form 'csv_file=@"samples/csv/test_csv_1000_records_1709942325.csv"' \
       --form 'delimiter=","' \
       --form 'enclosure="`"' \
       --form 'escape="@"'
       ```
       3. or with Postman through `Content-Type: multipart/form-data` and `key` = `csv_file`, `value` = `needed file`.
-   2. Console command to process CSV file is `make csv-process path=path/to/file.csv`. E.g. `make csv-process path=samples/csv/test_csv_1000_records_1709942325.csv`).
+   2. Console command to process CSV file is `make csv-process path=path/to/file.csv` (use relative path). E.g. `make csv-process path=samples/csv/test_csv_1000_records_1709942325.csv`).
    3. Also, you can pass additional options to manipulate CSV parsing. E.g. changing delimiter and others `make csv-process path=samples/csv/test_csv_1000_records_1709942325.csv "options=--delimiter=: --enclosure=# --escape=@"`
 
 ## System design
@@ -71,3 +71,11 @@ Fot this task I've decided to stick with simple PHP class (`App\Entity\Product`)
     - Adding message broker (e.g. RabbitMq) will help speed up parsing through paralleling processing.
       `App\Service\CsvProcessor::processRecord` has been already made for this purpose.
     - In order to support more CSV schemas `App\Entity\Product` could be extended with an additional logic of a list of supported entities/schemas.
+
+## Troubleshooting
+
+- If you have an error 
+```
+xcrun: error: invalid active developer path (/Library/Developer/CommandLineTools), missing xcrun at: /Library/Developer/CommandLineTools/usr/bin/xcrun
+```
+while running `make` command - you [need to install](https://apple.stackexchange.com/questions/254380/why-am-i-getting-an-invalid-active-developer-path-when-attempting-to-use-git-a) the `Xcode Command Line Tools` (run `xcode-select --install`) or reset it if has been already done (run `xcode-select --reset`).

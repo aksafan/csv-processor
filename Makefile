@@ -37,13 +37,13 @@ test:
 	docker-compose run --rm csv-processor-php-cli php vendor/bin/phpunit
 
 test-coverage:
-	docker-compose run --rm csv-processor-php-cli export XDEBUG_MODE=coverage php vendor/bin/phpunit --coverage-clover var/clover.xml --coverage-html var/coverage --coverage-filter=src/
+	docker-compose run -e XDEBUG_MODE=coverage --rm csv-processor-php-cli php vendor/bin/phpunit --coverage-clover var/clover.xml --coverage-html var/coverage --coverage-filter=src/
 
 test-unit:
 	docker-compose run --rm csv-processor-php-cli php vendor/bin/phpunit --testsuite=unit
 
 test-unit-coverage:
-	docker-compose run --rm csv-processor-php-cli export XDEBUG_MODE=coverage php vendor/bin/phpunit --testsuite=unit --coverage-clover var/clover.xml --coverage-html var/coverage --coverage-filter=src/
+	docker-compose run -e XDEBUG_MODE=coverage --rm csv-processor-php-cli php vendor/bin/phpunit --testsuite=unit --coverage-clover var/clover.xml --coverage-html var/coverage --coverage-filter=src/
 
 command-list:
 	docker-compose run --rm csv-processor-php-cli php bin/console list --short
