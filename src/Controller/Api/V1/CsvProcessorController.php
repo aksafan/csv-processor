@@ -6,7 +6,7 @@ namespace App\Controller\Api\V1;
 
 use App\Entity\Csv\Csv;
 use App\EventSubscriber\Api\Formatter\CsvErrorOutputBuilder;
-use App\Service\CsvProcessor;
+use App\Service\CsvProcessorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,7 +22,7 @@ class CsvProcessorController extends AbstractController
     public function __construct(
         private readonly SerializerInterface $serializer,
         private readonly ValidatorInterface $validator,
-        private readonly CsvProcessor $csvProcessorService,
+        private readonly CsvProcessorInterface $csvProcessorService,
         private readonly CsvErrorOutputBuilder $csvErrorOutputBuilder
     ) {
     }
@@ -50,16 +50,5 @@ class CsvProcessorController extends AbstractController
         }
 
         return $this->json($this->csvProcessorService->processFacade($csv), Response::HTTP_OK);
-    }
-
-    #[Route(
-        path: 'csv/processor/async',
-        name: 'csv_processor_async',
-        methods: ['POST']
-    )]
-    public function processAsync(Request $request): JsonResponse
-    {
-        // TODO: add job pushing to message broker
-        return $this->json([]);
     }
 }

@@ -8,7 +8,7 @@ use App\Command\Factory\CsvProcessorFactory;
 use App\Entity\Csv\CsvProperties;
 use App\Entity\Exception\Domain\Reader\CsvReaderException;
 use App\Entity\Exception\Domain\Reader\CsvRecordUnSuccessfulProcessingException;
-use App\Service\CsvProcessor;
+use App\Service\CsvProcessorInterface;
 use RuntimeException;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
@@ -29,7 +29,7 @@ class CsvProcessorCommand extends AbstractCommand
     public function __construct(
         private readonly ValidatorInterface $validator,
         private readonly CsvProcessorFactory $csvProcessorFactory,
-        private readonly CsvProcessor $csvProcessorService
+        private readonly CsvProcessorInterface $csvProcessorService
     ) {
         parent::__construct();
     }

@@ -6,7 +6,7 @@ namespace App\Entity\Csv;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-final class CsvGenerator
+class CsvGenerator
 {
     public function __construct(
         #[Assert\NotBlank]

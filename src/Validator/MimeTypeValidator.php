@@ -35,9 +35,10 @@ class MimeTypeValidator extends ConstraintValidator
             return;
         }
 
+        $mimeTypes = is_string($constraint->mimeTypes) ? [$constraint->mimeTypes] : $constraint->mimeTypes;
         $this->context->buildViolation($constraint->message)
             ->setParameter('{{ type }}', $this->formatValue($mimeType))
-            ->setParameter('{{ types }}', $this->formatValues($constraint->mimeTypes))
+            ->setParameter('{{ types }}', $this->formatValues($mimeTypes))
             ->setCode(\Symfony\Component\Validator\Constraints\File::INVALID_MIME_TYPE_ERROR)
             ->addViolation();
     }

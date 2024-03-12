@@ -12,15 +12,12 @@ use League\Csv\Exception;
 use League\Csv\InvalidArgument;
 use League\Csv\Writer;
 
-final readonly class CsvWriterFactory
+class CsvWriterFactory
 {
     public function create(CsvGenerator $csvGenerator, mixed $outputStream): Writer
     {
         try {
-            $csvWriter = Writer::createFromStream($outputStream)
-                ->setDelimiter($csvGenerator->delimiter)
-                ->setEnclosure($csvGenerator->enclosure)
-                ->setEscape($csvGenerator->escape);
+            $csvWriter = $this->getWriter($outputStream, $csvGenerator);
             $csvWriter->insertOne(Product::getScheme());
         } catch (InvalidArgument $exception) {
             throw new CsvWriterInvalidArgumentException($exception->getMessage());
@@ -29,5 +26,21 @@ final readonly class CsvWriterFactory
         }
 
         return $csvWriter;
+    }
+
+    /**
+     * @param mixed $outputStream
+     * @param CsvGenerator $csvGenerator
+     *
+     * @return Writer
+     *
+     * @throws InvalidArgument
+     */
+    protected function getWriter(mixed $outputStream, CsvGenerator $csvGenerator): Writer
+    {
+        return Writer::createFromStream($outputStream)
+            ->setDelimiter($csvGenerator->delimiter)
+            ->setEnclosure($csvGenerator->enclosure)
+            ->setEscape($csvGenerator->escape);
     }
 }

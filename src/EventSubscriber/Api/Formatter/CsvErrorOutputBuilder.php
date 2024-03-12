@@ -6,7 +6,7 @@ namespace App\EventSubscriber\Api\Formatter;
 
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
-final readonly class CsvErrorOutputBuilder
+readonly class CsvErrorOutputBuilder
 {
     /**
      * @param ConstraintViolationListInterface[] $errors

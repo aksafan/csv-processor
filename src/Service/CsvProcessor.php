@@ -18,7 +18,7 @@ use League\Csv\Reader;
 use League\Csv\SyntaxError;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-final readonly class CsvProcessor
+final readonly class CsvProcessor implements CsvProcessorInterface
 {
     public function __construct(
         private ValidatorInterface $validator,
