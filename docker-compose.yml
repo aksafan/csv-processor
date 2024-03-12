@@ -1,0 +1,45 @@
+version: '3'
+services:
+    csv-processor-nginx:
+        build:
+            context: ./docker/development/nginx
+        volumes:
+            - ./:/app
+            - ./docker/development/nginx/config/default.conf:/etc/nginx/conf.d/default.conf
+        depends_on:
+            - csv-processor-php-fpm
+        ports:
+            - "8080:80"
+    csv-processor-php-fpm:
+        build:
+            context: ./docker/development/fpm
+        volumes:
+            - ./:/app
+            - ./docker/development/fpm/config/php.ini:/usr/local/etc/php/php.ini
+        environment:
+            PHP_IDE_CONFIG: "serverName=CsvProcessorDocker"
+        depends_on:
+            - csv-processor-postgres
+    csv-processor-php-cli:
+        build:
+            context: ./docker/development/cli
+        volumes:
+            - ./:/app
+            - ./docker/development/cli/config/php.ini:/usr/local/etc/php/php.ini
+            - composer:/root/.composer/cache
+        depends_on:
+            - csv-processor-postgres
+    csv-processor-postgres:
+        image: postgres:13.14-alpine
+        volumes:
+            - csv-processor-postgres:/var/lib/postgresql/data
+        environment:
+            POSTGRES_USER: app
+            POSTGRES_PASSWORD: secret
+            POSTGRES_DB: app
+        ports:
+            - "5432:5432"
+
+volumes:
+    csv-processor-postgres:
+    composer:
