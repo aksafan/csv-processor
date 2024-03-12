@@ -80,7 +80,8 @@ Fot this task I've decided to stick with simple PHP class (`App\Entity\Product`)
     - by throwing custom `CsvValidationException` and catching it with `KernelEvents` (as it was done for `App\Controller\Api\Formatter\ConstraintViolationFormatter`);
     - by reacting to `KernelEvents::RESPONSE` event and modifying response.
 - Several "service" interfaces were added (at the 1st thought redundant) to move to abstraction usage rather than realization and for potential future usage when we could have different processing behaviour.
-This also helped to separate business logic and tests.
+This also helped to separate business logic and tests. For now they are stored near their realizations but in the future they might be moved closer to where they will be used (E.g. to Application layer if we got for UseCases).
+- ORM package and postgre docker-compose service were added for potential future usage.
 
 - Possible optimizations:
     - Instead of using `League\Csv\Reader::getRecordsAsObject` to read and hydrate a record at once, we can use `League\Csv\Reader::getRecords` to get an array and map/validate it manually.

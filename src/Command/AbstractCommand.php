@@ -13,6 +13,8 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 abstract class AbstractCommand extends Command
 {
+    abstract protected function getStopWatchEvenName(): string;
+
     protected function getStopwatch(): Stopwatch
     {
         $stopwatch = new Stopwatch();
@@ -20,8 +22,6 @@ abstract class AbstractCommand extends Command
 
         return $stopwatch;
     }
-
-    abstract protected function getStopWatchEvenName(): string;
 
     protected function getProgressBar(OutputInterface $output, int $numberOfSteps): ProgressBar
     {

@@ -30,7 +30,7 @@ class CsvErrorOutputBuilderTest extends TestCase
 
         foreach ($csvErrorOutputs as $index => $csvErrorOutput) {
             $this->assertInstanceOf(CsvErrorOutput::class, $csvErrorOutput);
-            $this->assertEquals($index + 1, $csvErrorOutput->rowIndex); // Assuming row indices start from 1
+            $this->assertEquals($index + 1, $csvErrorOutput->rowIndex);
             $this->assertSame($violationListMock, $csvErrorOutput->violationInfo);
         }
     }

@@ -31,7 +31,6 @@ class CsvProcessorCommand extends AbstractCommand
     public function __construct(
         private readonly ValidatorInterface $validator,
         private readonly CsvProcessorFactory $csvProcessorFactory,
-        private readonly CsvProcessorInterface $csvProcessorService,
         private readonly CsvRecordParserInterface $csvRecordParser,
         private readonly CsvRecordsReaderInterface $csvRecordsReader
     ) {
