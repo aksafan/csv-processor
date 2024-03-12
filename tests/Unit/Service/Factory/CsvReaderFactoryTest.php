@@ -5,7 +5,7 @@ namespace App\Tests\Unit\Service\Factory;
 use App\Entity\Csv\Csv;
 use App\Entity\Exception\Domain\Reader\CsvReaderException;
 use App\Entity\Exception\Domain\Reader\CsvReaderInvalidArgumentException;
-use App\Service\Factory\CsvReaderFactory;
+use App\Service\Factory\CsvFileReaderFactory;
 use League\Csv\Exception;
 use League\Csv\Reader;
 use PHPUnit\Framework\TestCase;
@@ -16,11 +16,11 @@ class CsvReaderFactoryTest extends TestCase
     private const VALID_FILE_PATH = __DIR__ . '/../../Fixtures/valid.csv';
     private const INVALID_DELIMITER = 'efwef';
 
-    private CsvReaderFactory $csvReaderFactory;
+    private CsvFileReaderFactory $csvReaderFactory;
 
     protected function setUp(): void
     {
-        $this->csvReaderFactory = new CsvReaderFactory();
+        $this->csvReaderFactory = new CsvFileReaderFactory();
     }
 
     public function testCreateWithValidArguments(): void
@@ -49,7 +49,7 @@ class CsvReaderFactoryTest extends TestCase
         $reader->method('setHeaderOffset')
             ->willThrowException(new Exception());
 
-        $factory = $this->getMockBuilder(CsvReaderFactory::class)
+        $factory = $this->getMockBuilder(CsvFileReaderFactory::class)
             ->onlyMethods(['getReader'])
             ->getMock();
         $factory

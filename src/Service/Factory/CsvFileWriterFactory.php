@@ -12,7 +12,7 @@ use League\Csv\Exception;
 use League\Csv\InvalidArgument;
 use League\Csv\Writer;
 
-class CsvWriterFactory
+class CsvFileWriterFactory
 {
     public function create(CsvGenerator $csvGenerator, mixed $outputStream): Writer
     {

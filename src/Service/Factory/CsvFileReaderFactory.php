@@ -12,7 +12,7 @@ use League\Csv\InvalidArgument;
 use League\Csv\Reader;
 use League\Csv\UnavailableStream;
 
-class CsvReaderFactory
+class CsvFileReaderFactory
 {
     public function create(Csv $csv): Reader
     {

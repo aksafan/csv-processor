@@ -8,7 +8,7 @@ use App\Command\Factory\CsvGeneratorFactory;
 use App\Entity\Csv\CsvGenerator;
 use App\Entity\Csv\CsvProperties;
 use App\Entity\Exception\Domain\Writer\CsvWriterException;
-use App\Service\Factory\CsvWriterFactory;
+use App\Service\Factory\CsvFileWriterFactory;
 use League\Csv\CannotInsertRecord;
 use League\Csv\Exception;
 use League\Csv\Writer;
@@ -36,7 +36,7 @@ class CsvGeneratorCommand extends AbstractCommand
     public function __construct(
         private readonly ValidatorInterface $validator,
         private readonly CsvGeneratorFactory $csvGeneratorFactory,
-        private readonly CsvWriterFactory $csvWriterFactory
+        private readonly CsvFileWriterFactory $csvWriterFactory
     ) {
         parent::__construct();
     }

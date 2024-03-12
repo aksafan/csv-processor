@@ -6,7 +6,7 @@ use App\Entity\Csv\CsvGenerator;
 use App\Entity\Csv\CsvProperties;
 use App\Entity\Exception\Domain\Writer\CsvWriterException;
 use App\Entity\Exception\Domain\Writer\CsvWriterInvalidArgumentException;
-use App\Service\Factory\CsvWriterFactory;
+use App\Service\Factory\CsvFileWriterFactory;
 use League\Csv\Exception;
 use League\Csv\Writer;
 use PHPUnit\Framework\TestCase;
@@ -17,12 +17,12 @@ class CsvWriterFactoryTest extends TestCase
     private const NUMBER_OF_RECORDS = 100;
     private const INVALID_DELIMITER = 'efwef';
 
-    private CsvWriterFactory $csvWriterFactory;
+    private CsvFileWriterFactory $csvWriterFactory;
     private mixed $outputStream;
 
     protected function setUp(): void
     {
-        $this->csvWriterFactory = new CsvWriterFactory();
+        $this->csvWriterFactory = new CsvFileWriterFactory();
         $this->outputStream = fopen('php://memory', 'w+');
     }
 
@@ -57,7 +57,7 @@ class CsvWriterFactoryTest extends TestCase
         $writer->method('insertOne')
             ->willThrowException(new Exception());
 
-        $factory = $this->getMockBuilder(CsvWriterFactory::class)
+        $factory = $this->getMockBuilder(CsvFileWriterFactory::class)
             ->onlyMethods(['getWriter'])
             ->getMock();
         $factory
