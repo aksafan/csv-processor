@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Controller\Api\V1;
 
+use App\Controller\Facade\CsvProcessorFacade;
 use App\Entity\Csv\Csv;
 use App\EventSubscriber\Api\Formatter\CsvErrorOutputBuilder;
-use App\Service\CsvProcessorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,8 +22,8 @@ class CsvProcessorController extends AbstractController
     public function __construct(
         private readonly SerializerInterface $serializer,
         private readonly ValidatorInterface $validator,
-        private readonly CsvProcessorInterface $csvProcessorService,
-        private readonly CsvErrorOutputBuilder $csvErrorOutputBuilder
+        private readonly CsvErrorOutputBuilder $csvErrorOutputBuilder,
+        private readonly CsvProcessorFacade $csvProcessFacade
     ) {
     }
 
@@ -49,6 +49,6 @@ class CsvProcessorController extends AbstractController
             return JsonResponse::fromJsonString($json, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-        return $this->json($this->csvProcessorService->processFacade($csv), Response::HTTP_OK);
+        return $this->json($this->csvProcessFacade->process($csv), Response::HTTP_OK);
     }
 }

@@ -9,6 +9,8 @@ use App\Entity\Csv\CsvProperties;
 use App\Entity\Exception\Domain\Reader\CsvReaderException;
 use App\Entity\Exception\Domain\Reader\CsvRecordUnSuccessfulProcessingException;
 use App\Service\CsvProcessorInterface;
+use App\Service\CsvRecordParserInterface;
+use App\Service\CsvRecordsReaderInterface;
 use RuntimeException;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
@@ -29,7 +31,9 @@ class CsvProcessorCommand extends AbstractCommand
     public function __construct(
         private readonly ValidatorInterface $validator,
         private readonly CsvProcessorFactory $csvProcessorFactory,
-        private readonly CsvProcessorInterface $csvProcessorService
+        private readonly CsvProcessorInterface $csvProcessorService,
+        private readonly CsvRecordParserInterface $csvRecordParser,
+        private readonly CsvRecordsReaderInterface $csvRecordsReader
     ) {
         parent::__construct();
     }
@@ -85,7 +89,7 @@ class CsvProcessorCommand extends AbstractCommand
         $io->note(sprintf('Starting to process file: "%s".', $csv->csvFile->getPathname()));
 
         try {
-            $records = $this->csvProcessorService->getRecords($csv);
+            $records = $this->csvRecordsReader->read($csv);
         } catch (CsvReaderException $exception) {
             return $this->endWithFailure($io, $stopwatch, $exception->getMessage());
         } catch (RuntimeException $exception) {
@@ -96,7 +100,7 @@ class CsvProcessorCommand extends AbstractCommand
 
         foreach ($records as $record) {
             try {
-                $this->csvProcessorService->processRecord($record);
+                $this->csvRecordParser->parse($record);
             } catch (CsvRecordUnSuccessfulProcessingException $exception) {
                 $errors[$records->key() + 1] = $exception->errors;
             }

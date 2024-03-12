@@ -5,73 +5,60 @@ declare(strict_types=1);
 namespace App\Tests\Unit\Service;
 
 use App\Entity\CsvScheme\Product;
-use App\Entity\Exception\Domain\Reader\CsvRecordsUnSuccessfulProcessingException;
 use App\Entity\Exception\Domain\Reader\CsvRecordUnSuccessfulProcessingException;
-use App\Service\CsvProcessor;
-use App\Service\CsvProcessorInterface;
+use App\Service\CsvRecordParser;
 use App\Service\CsvRecordParserInterface;
-use ArrayIterator;
 use PHPUnit\Framework\MockObject\Exception;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class CsvProcessorTest extends TestCase
+class CsvRecordParserTest extends TestCase
 {
     private const VIOLATION_ERROR_MESSAGE = 'The mime type of the file is invalid.';
 
-    private CsvProcessorInterface $csvProcessor;
+    private ValidatorInterface $validator;
 
     private CsvRecordParserInterface $csvRecordParser;
 
-    public function testProcessRecordsWithValidCsv(): void
+
+    public function testParseRecordWithValidProduct(): void
     {
         $product = $this->createValidProduct();
-        $iterator = new ArrayIterator([$product]);
 
-        $this->csvRecordParser
-            ->method('parse')
-            ->willReturn(true);
+        $this->validator
+            ->expects($this->once())
+            ->method('validate')
+            ->with($product)
+            ->willReturn($this->createViolationList());
 
-        $result = $this->csvProcessor->processRecords($iterator);
+        $result = $this->csvRecordParser->parse($product);
 
         $this->assertTrue($result);
     }
 
-    public function testProcessRecordsWithInvalidCsv(): void
+    /**
+     * @throws Exception
+     */
+    public function testParseRecordWithInvalidProduct(): void
     {
         $product = $this->createInvalidProduct();
-        $iterator = new ArrayIterator([$product]);
         $errors = $this->createMockViolationListWithMessageError();;
-        $expectedException = new CsvRecordsUnSuccessfulProcessingException([$errors]);
+        $expectedException = new CsvRecordUnSuccessfulProcessingException($errors);
 
-        $this->csvRecordParser
-            ->method('parse')
-            ->willThrowException($expectedException);
+        $this->validator
+            ->expects($this->once())
+            ->method('validate')
+            ->with($product)
+            ->willReturn($errors);
 
-        $this->expectException(CsvRecordsUnSuccessfulProcessingException::class);
+        $this->expectException(CsvRecordUnSuccessfulProcessingException::class);
         $this->expectExceptionMessage('CSV was NOT processed successfully. Here is the list of errors: ');
         $this->expectExceptionObject($expectedException);
 
-        $this->csvProcessor->processRecords($iterator);
-    }
-
-    public function testProcessRecordsWithErrors(): void
-    {
-        $product = $this->createInvalidProduct();
-        $iterator = new ArrayIterator([$product]);
-        $errors = new ConstraintViolationList($this->createMockViolationListWithMessageError());
-        $expectedException = new CsvRecordUnSuccessfulProcessingException($errors);
-
-        $this->csvRecordParser
-            ->method('parse')
-            ->willThrowException($expectedException);
-
-        $this->expectException(CsvRecordsUnSuccessfulProcessingException::class);
-        $this->expectExceptionMessage('CSV was NOT processed successfully. Here is the list of errors: ');
-
-        $this->csvProcessor->processRecords($iterator);
+        $this->csvRecordParser->parse($product);
     }
 
     /**
@@ -79,11 +66,9 @@ class CsvProcessorTest extends TestCase
      */
     protected function setUp(): void
     {
-        $this->csvRecordParser = $this->createMock(CsvRecordParserInterface::class);
+        $this->validator = $this->createMock(ValidatorInterface::class);
 
-        $this->csvProcessor = new CsvProcessor(
-            $this->csvRecordParser
-        );
+        $this->csvRecordParser = new CsvRecordParser($this->validator);
     }
 
     private function createValidProduct(): Product
@@ -128,5 +113,10 @@ class CsvProcessorTest extends TestCase
         $violationList->add(new ConstraintViolation(self::VIOLATION_ERROR_MESSAGE, '', [], null, '', null));
 
         return $violationList;
+    }
+
+    private function createViolationList(): ConstraintViolationListInterface
+    {
+        return new ConstraintViolationList();
     }
 }
