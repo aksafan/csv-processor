@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\Controller\Facade;
 
-use App\Controller\Facade\CsvProcessorFacade;
+use App\Controller\Service\CsvHandler;
 use App\Entity\Csv\Csv;
 use App\Entity\CsvScheme\Product;
 use App\Entity\Exception\Domain\Reader\CsvReaderException;
@@ -21,7 +21,7 @@ class CsvProcessorFacadeTest extends TestCase
     private const VALID_CSV_FILE = __DIR__ . '/../../Fixtures/valid.csv';
     private const INVALID_CSV_FILE = __DIR__ . '/../../Fixtures/invalid.csv';
 
-    private CsvProcessorFacade $csvProcessorFacade;
+    private CsvHandler $csvProcessorFacade;
 
     private CsvRecordsReaderInterface $csvRecordsReader;
 
@@ -38,7 +38,7 @@ class CsvProcessorFacadeTest extends TestCase
             ->method('read')
             ->willReturn($iterator);
 
-        $result = $this->csvProcessorFacade->process($csv);
+        $result = $this->csvProcessorFacade->handle($csv);
 
         $this->assertFalse($result);
     }
@@ -53,7 +53,7 @@ class CsvProcessorFacadeTest extends TestCase
 
         $this->expectException(CsvReaderException::class);
 
-        $this->csvProcessorFacade->process($csv);
+        $this->csvProcessorFacade->handle($csv);
     }
 
     /**
@@ -64,7 +64,7 @@ class CsvProcessorFacadeTest extends TestCase
         $this->csvRecordsReader = $this->createMock(CsvRecordsReaderInterface::class);
         $csvRecordParser = $this->createMock(CsvRecordParserInterface::class);
 
-        $this->csvProcessorFacade = new CsvProcessorFacade(new CsvProcessor($csvRecordParser), $this->csvRecordsReader);
+        $this->csvProcessorFacade = new CsvHandler(new CsvProcessor($csvRecordParser), $this->csvRecordsReader);
     }
 
     private function createCsv(string $pathToCsv): Csv

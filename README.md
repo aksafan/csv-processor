@@ -74,6 +74,7 @@ Fot this task I've decided to stick with simple PHP class (`App\Entity\Product`)
   - API call with async processing;
   - console command run;
   - any other potential entry points.
+- `App\Controller\Service\CsvHandler` wraps a little bit of realization details around CSV processing so the client (Controller) doesn't need to bother about anything.
 - Using `ConstraintViolationListNormalizer` to generate the list of validation errors based on the [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807) specification.
   If customization is needed there are several options:
     - by passing a custom `Normalizer` to `Serializer` object;

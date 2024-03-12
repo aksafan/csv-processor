@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Facade;
+namespace App\Controller\Service;
 
 use App\Entity\Csv\Csv;
 use App\Service\CsvProcessorInterface;
 use App\Service\CsvRecordsReaderInterface;
 
-readonly class CsvProcessorFacade
+readonly class CsvHandler
 {
     public function __construct(
         private CsvProcessorInterface $csvProcessor,
@@ -16,7 +16,7 @@ readonly class CsvProcessorFacade
     ) {
     }
 
-    public function process(Csv $csv): bool
+    public function handle(Csv $csv): bool
     {
         $recordsToProcess = $this->csvRecordsReader->read($csv);
 
