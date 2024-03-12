@@ -44,6 +44,9 @@
 - To see test coverage run `make test-unit-coverage` and then open `var/coverage/index.html`
 - To use more complex command you can just get inside container `make sh c=csv-processor-php-fpm` and do your stuff.
 
+### Test coverage
+![img.png](samples/tests/img.png)
+
 ## Samples
 - You can find several validation errors' response examples [here](samples/api/response).
 - You can find different csv file examples [here](samples/csv).
@@ -76,6 +79,9 @@ Fot this task I've decided to stick with simple PHP class (`App\Entity\Product`)
     - by passing a custom `Normalizer` to `Serializer` object;
     - by throwing custom `CsvValidationException` and catching it with `KernelEvents` (as it was done for `App\Controller\Api\Formatter\ConstraintViolationFormatter`);
     - by reacting to `KernelEvents::RESPONSE` event and modifying response.
+- Several "service" interfaces were added (at the 1st thought redundant) to move to abstraction usage rather than realization and for potential future usage when we could have different processing behaviour.
+This also helped to separate business logic and tests.
+
 - Possible optimizations:
     - Instead of using `League\Csv\Reader::getRecordsAsObject` to read and hydrate a record at once, we can use `League\Csv\Reader::getRecords` to get an array and map/validate it manually.
       This will decrease memory usage from not creating additional objects at a price of convenience.
