@@ -19,9 +19,19 @@
       --form 'enclosure="`"' \
       --form 'escape="@"'
       ```
-      3. or with Postman through `Content-Type: multipart/form-data` and `key` = `csv_file`, `value` = `needed file`.
+      3. or with additional options:
+      ```curl
+      curl --location 'http://127.0.0.1:8080/api/v1/csv/processor' \
+      --form 'csv_file=@"samples/csv/test_csv_10000_records_1709942370_invalid.csv"'
+      ```
+      4. or with Postman through `Content-Type: multipart/form-data` and `key` = `csv_file`, `value` = `needed file`.
    2. Console command to process CSV file is `make csv-process path=path/to/file.csv` (use relative path). E.g. `make csv-process path=samples/csv/test_csv_1000_records_1709942325.csv`).
    3. Also, you can pass additional options to manipulate CSV parsing. E.g. changing delimiter and others `make csv-process path=samples/csv/test_csv_1000_records_1709942325.csv "options=--delimiter=: --enclosure=# --escape=@"`
+4. API will respond:
+   1. If successfully processed and validate CSV - with `200 OK` and [success response](/samples/api/response/success_response_example.json).
+   2. If failed to validate CSV file itself - with `422 Unprocessable Content` and [unsuccessful response](/samples/api/response/validation_single_error_response_example.json).
+   3. If unsuccessfully processed and/or failed to validate CSV content - with `422 Unprocessable Content` and [unsuccessful response](/samples/api/response/validation_list_error_response_example.json).
+   4. If something went wrong while processing CSV file - with `400 Bad Request` and [unsuccessful response](/samples/api/response/bad_request_error_response_example.json).
 
 ## System design
 
@@ -37,11 +47,12 @@
 ## Samples
 - You can find several validation errors' response examples [here](samples/api/response).
 - You can find different csv file examples [here](samples/csv).
-- You can generate your own CSV files for test purpose by running `make csv-generate path=path/to/folder`. E.g `make csv-generate path=/samples`.
+- You can generate your own CSV files for test purpose by running `make csv-generate path=path/to/folder/`. E.g `make csv-generate path=samples/`.
 - Also, you can pass additional options to manipulate CSV generating. E.g. setting amount of rows to generate, delimiter and others `make csv-generate path=samples/ "options=-N 250000 --delimiter=: --enclosure=# --escape=@"`
 
 ## Notes
 
+I've made several assumptions about how this exact application could behave. Some of them are described in [System Design section](#system-design) and below: 
 - For test purpose max file size was set (both on nginx and php side) to `256 Mb` for API calls. No limitations for cli tho.
 - Console command was tested against several different CSV files:
   - 1000 rows, `0.66 Mb`: it takes ~ `18.00 MiB` and `0.7 sec` to process;
@@ -70,7 +81,13 @@ Fot this task I've decided to stick with simple PHP class (`App\Entity\Product`)
       This will decrease memory usage from not creating additional objects at a price of convenience.
     - Adding message broker (e.g. RabbitMq) will help speed up parsing through paralleling processing.
       `App\Service\CsvProcessor::processRecord` has been already made for this purpose.
+    - Processing through message broker could be done with ETL approach. This will help to greatly speed up things and support complex CSV-entity schemas.
     - In order to support more CSV schemas `App\Entity\Product` could be extended with an additional logic of a list of supported entities/schemas.
+    - Validation errors' handling in `App\Controller\Api\V1\CsvProcessorController::process` could be merged into `App\EventSubscriber\Api\Formatter\DomainExceptionFormatter::onKernelException`.
+  Left it in controller to show possible different approaches.
+    - Header errors' handling in `App\Controller\Api\V1\CsvProcessorController::getHeaders` could be merged into main violation error list by throwing `CsvRecordUnSuccessfulProcessingException`.
+  Left it as it is to show another approach with state manipulation and error handling through Domain exceptions and `400 HTTP error code`.
+    - OpenApi API doc, CI/CD, linters could be added as well for a convenience.
 
 ## Troubleshooting
 
